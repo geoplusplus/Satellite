@@ -1,0 +1,133 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>showjoy-satellite</artifactId>
+	<name>ShowJoy-Satellite</name>
+	<packaging>jar</packaging>
+	<version>1.0-SNAPSHOT</version>
+
+	<parent>
+		<groupId>com.showjoy</groupId>
+		<artifactId>showjoy-parent</artifactId>
+		<version>1.3.1</version>
+	</parent>
+
+	<scm>
+		<connection>scm:svn:http://code.showjoy.net/svn/ShowJoy-Satellite/trunk</connection>
+		<developerConnection>scm:svn:http://code.showjoy.net/svn/ShowJoy-Satellite/trunk</developerConnection>
+		<url>http://code.showjoy.net/svn/ShowJoy-Satellite/trunk</url>
+	</scm>
+
+	<properties>
+		<com.showjoy.core.version>3.3.6</com.showjoy.core.version>
+		<com.showjoy.common.version>3.12.1</com.showjoy.common.version>
+	</properties>
+	<dependencies>
+
+
+		<dependency>
+			<groupId>com.showjoy</groupId>
+			<artifactId>showjoy-common</artifactId>
+			<version>${com.showjoy.common.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.showjoy</groupId>
+			<artifactId>showjoy-core</artifactId>
+			<version>${com.showjoy.core.version}</version>
+		</dependency>
+		
+		 <dependency>
+		    <groupId>io.netty</groupId>
+		    <artifactId>netty-all</artifactId> <!-- Use 'netty-all' for 4.0 or above -->
+		    <version>5.0.0.Alpha2</version>
+		    <scope>compile</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		
+		<finalName>satellite</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+							<mainClass>com.showjoy.satellite.Main</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+		    <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-assembly-plugin</artifactId>
+			    <version>2.6</version>
+			    <configuration>
+				 <descriptors> <!--描述文件路径-->
+					  <descriptor>src/main/resources/assembly.xml</descriptor>
+				</descriptors>
+				
+		       </configuration>
+				<executions>  <!--执行器 mvn assembly:assembly-->
+					<execution>
+						<id>make-assembly</id><!--名字任意 -->  
+					<phase>package</phase><!-- 绑定到package生命周期阶段上 -->  
+					<goals>  
+					   <goal>single</goal><!-- 只运行一次 -->  
+					</goals>  
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<tagBase>http://code.showjoy.net/svn/ShowJoy-Satellite/tags/</tagBase>
+					<tagNameFormat>@{project.version}</tagNameFormat>
+					<username>yunjeeops</username>
+					<password>yunjeeops</password>
+					<checkModificationExcludes>
+					<checkModificationExclude>.project</checkModificationExclude>
+					<checkModificationExclude>.classpath</checkModificationExclude>
+					</checkModificationExcludes>
+				</configuration>
+			</plugin>
+			
+		</plugins>
+	</build>
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<filters>
+					<filter>src/main/resources/dev.properties</filter>
+				</filters>
+			</build>
+		</profile>
+		<profile>
+			<id>product</id>
+			<build>
+				<filters>
+					<filter>src/main/resources/release.properties</filter>
+				</filters>
+			</build>
+		</profile>
+		<profile>
+			<id>test</id>
+			<build>
+				<filters>
+					<filter>src/main/resources/test.properties</filter>
+				</filters>
+			</build>
+		</profile>
+	</profiles>
+</project>

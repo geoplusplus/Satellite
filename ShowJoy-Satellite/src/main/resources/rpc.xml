@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rpc>
+	<server name="scservice" port="8080" bussinessthreadcount="20"/>
+	<clients>
+	
+	 <!-- <client name ="userClient" host="localhost" port="80" bussinessthreadcount="10"/>  -->
+	  
+	</clients>
+	
+</rpc>
